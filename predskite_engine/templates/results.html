@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Results</title>
+    <script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #aa3d3d;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .jumbotron {
+            background: transparent !important;
+        }
+        h2 {
+            color: #5a6268;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #6c757d;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        #mol3D {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+            <div style="background:transparent !important" class="jumbotron">
+              <div>
+                <p>
+                  <center>
+                    <a href="/">
+			<img src="../static/predskite.png" alt="" width="500">
+		    </a>
+                  <!-- <font size="8">Search</font> -->
+                  </center>
+                </p>
+              </div>
+        <h2>{{res.input}}</h2>
+        <p>Estimated PCE value is: {{res.result}}</p>
+        <p>
+            <input id="smilesStr" type="text" value="{{res.smiles_str}}" readonly
+                   style="width: 50%; margin: auto; text-align: center;">
+            <button onclick="myFunction()" style="display: block; margin: auto;">Copy SMILES String</button>
+        </p>
+        <div id="mol3D" style="width: 400px; height: 400px; position: relative; margin: auto;"></div>
+    </div>
+
+    <script>
+        const pdbData = `{{ res.pdb_block }}`;
+
+        let viewer = $3Dmol.createViewer("mol3D");
+        viewer.addModel(pdbData, 'pdb');
+        viewer.setStyle({}, {stick:{}});
+        viewer.zoomTo();
+        viewer.rotate(720, {'x':1, 'y':1, 'z':1});
+        viewer.spin('x', 1);
+        viewer.render();
+
+        function myFunction() {
+            /* Get the text field */
+            var copyText = document.getElementById("smilesStr");
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+        }
+    </script>
+</body>
+
+</html>
